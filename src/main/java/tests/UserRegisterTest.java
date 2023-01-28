@@ -34,8 +34,7 @@ public class UserRegisterTest extends BaseTestCase{
         userdata.put("lastName","zloyas");
 
         Response responseCreateAuth = apiCoreRequests.makePostRequest(this.url,userdata);
-
-        Assertions.assertJsonHasKey(responseCreateAuth,"id");
+        Assertions.assertJsonHasField(responseCreateAuth,"id");
         Assertions.assertStatusCodeEquals(responseCreateAuth,200);
     }
 
