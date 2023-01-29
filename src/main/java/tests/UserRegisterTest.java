@@ -25,13 +25,7 @@ public class UserRegisterTest extends BaseTestCase{
     @DisplayName("Positive registration test")
     @Test
     public void testCreateUserPositive(){
-        String email = DataGenerator.getRandomEmail();
-        Map<String,String> userdata = new HashMap<>();
-        userdata.put("email",email);
-        userdata.put("password","123");
-        userdata.put("username","zloyas");
-        userdata.put("firstName","zloyas");
-        userdata.put("lastName","zloyas");
+        Map<String,String> userdata = DataGenerator.getRegistrationData();
 
         Response responseCreateAuth = apiCoreRequests.makePostRequest(this.url,userdata);
         Assertions.assertJsonHasField(responseCreateAuth,"id");
@@ -45,11 +39,7 @@ public class UserRegisterTest extends BaseTestCase{
         String email = "vinkotov@example.com";
         Map<String,String> userdata = new HashMap<>();
         userdata.put("email",email);
-        userdata.put("password","123");
-        userdata.put("username","learnqa");
-        userdata.put("firstName","learnqa");
-        userdata.put("lastName","learnqa");
-
+        userdata = DataGenerator.getRegistrationData(userdata);
         Response responceCreateAuth = apiCoreRequests.makePostRequest(this.url,userdata);
 
         Assertions.assertResponseTextEquals(responceCreateAuth,"Users with email '"+ email +"' already exists");
@@ -63,10 +53,7 @@ public class UserRegisterTest extends BaseTestCase{
         String email = "zloyasexample.com";
         Map<String,String> userdata = new HashMap<>();
         userdata.put("email",email);
-        userdata.put("password","0000");
-        userdata.put("username","zloyas");
-        userdata.put("firstName","zloyas");
-        userdata.put("lastName","zloyas");
+        userdata = DataGenerator.getRegistrationData(userdata);
 
         Response responseNotCorrectEmail = apiCoreRequests.makePostRequest(this.url,userdata);
 
@@ -88,38 +75,23 @@ public class UserRegisterTest extends BaseTestCase{
     static Stream<Map<String,String>> UserDataWithNoKey(){
         Map<String,String> userdata1 = new HashMap<>();
         userdata1.put("email","");
-        userdata1.put("password","123");
-        userdata1.put("username","learnqa");
-        userdata1.put("firstName","learnqa");
-        userdata1.put("lastName","learnqa");
+        userdata1 = DataGenerator.getRegistrationData(userdata1);
 
         Map<String,String> userdata2 = new HashMap<>();
-        userdata2.put("email","zloyas1@example.com");
         userdata2.put("password","");
-        userdata2.put("username","learnqa");
-        userdata2.put("firstName","learnqa");
-        userdata2.put("lastName","learnqa");
+        userdata2 = DataGenerator.getRegistrationData(userdata2);
 
         Map<String,String> userdata3 = new HashMap<>();
-        userdata3.put("email","zloyas3@example.com");
-        userdata3.put("password","123");
         userdata3.put("username","");
-        userdata3.put("firstName","learnqa");
-        userdata3.put("lastName","learnqa");
+        userdata3 = DataGenerator.getRegistrationData(userdata3);
 
         Map<String,String> userdata4 = new HashMap<>();
-        userdata4.put("email","zloyas@example.com");
-        userdata4.put("password","123");
-        userdata4.put("username","learnqa");
         userdata4.put("firstName","");
-        userdata4.put("lastName","learnqa");
+        userdata4 = DataGenerator.getRegistrationData(userdata4);
 
         Map<String,String> userdata5 = new HashMap<>();
-        userdata5.put("email","zloyas@example.com");
-        userdata5.put("password","123");
-        userdata5.put("username","learnqa");
-        userdata5.put("firstName","learnqa");
         userdata5.put("lastName","");
+        userdata5 = DataGenerator.getRegistrationData(userdata5);
 
         return Stream.of(userdata1,userdata2,userdata3,userdata4,userdata5);
     }
@@ -128,13 +100,9 @@ public class UserRegisterTest extends BaseTestCase{
     @DisplayName("Negative registration test: short username")
     @Test
     public void testShortName(){
-        String email = "zloyas@example.com";
         Map<String,String> userdata = new HashMap<>();
-        userdata.put("email",email);
-        userdata.put("password","123");
         userdata.put("username","l");
-        userdata.put("firstName","zloyas");
-        userdata.put("lastName","zloyas");
+        userdata = DataGenerator.getRegistrationData(userdata);
 
         Response responseShortName = apiCoreRequests.makePostRequest(this.url,userdata);
 
@@ -146,14 +114,9 @@ public class UserRegisterTest extends BaseTestCase{
     @DisplayName("Negative registration test: long username")
     @Test
     public void testLongName(){
-        String email = "zloyas@example.com";
         Map<String,String> userdata = new HashMap<>();
-        String name = DataGenerator.getRandomString(251);
-        userdata.put("email",email);
-        userdata.put("password","123");
-        userdata.put("username",name);
-        userdata.put("firstName","zloyas");
-        userdata.put("lastName","zloyas");
+        userdata.put("username",DataGenerator.getRandomString(251));
+        userdata = DataGenerator.getRegistrationData(userdata);
 
         Response responseLongName = apiCoreRequests.makePostRequest(this.url,userdata);
 
