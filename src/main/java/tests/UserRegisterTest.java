@@ -1,4 +1,5 @@
 package tests;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
@@ -10,13 +11,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+
 import org.junit.jupiter.api.DisplayName;
 
 @Epic("Registration cases")
 @Feature("Registration")
+@Link("https://software-testing.ru/lms/mod/assign/view.php?id=308005")
 public class UserRegisterTest extends BaseTestCase{
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
     String url = "https://playground.learnqa.ru/api/user/";
@@ -24,6 +24,7 @@ public class UserRegisterTest extends BaseTestCase{
     @Description("Successfully user creation")
     @DisplayName("Positive registration test")
     @Test
+    @Severity(SeverityLevel.BLOCKER)
     public void testCreateUserPositive(){
         Map<String,String> userdata = DataGenerator.getRegistrationData();
 
@@ -35,6 +36,7 @@ public class UserRegisterTest extends BaseTestCase{
     @Description("Unsuccessfully user creation: existing email")
     @DisplayName("Negative registration test: existing email")
     @Test
+    @Severity(SeverityLevel.NORMAL)
     public void testCreateUserWithExistingEmail(){
         String email = "vinkotov@example.com";
         Map<String,String> userdata = new HashMap<>();
@@ -49,6 +51,7 @@ public class UserRegisterTest extends BaseTestCase{
     @Description("Unsuccessfully user creation: invalid email")
     @DisplayName("Negative registration test: invalid email")
     @Test
+    @Severity(SeverityLevel.NORMAL)
     public void testNotCorrectEmail(){
         String email = "zloyasexample.com";
         Map<String,String> userdata = new HashMap<>();
@@ -62,6 +65,7 @@ public class UserRegisterTest extends BaseTestCase{
 
     }
 
+    @Severity(SeverityLevel.MINOR)
     @Description("Unsuccessfully user creation: key missing")
     @DisplayName("Negative registration test: key missing")
     @ParameterizedTest
@@ -99,6 +103,7 @@ public class UserRegisterTest extends BaseTestCase{
     @Description("Unsuccessfully user creation: short username")
     @DisplayName("Negative registration test: short username")
     @Test
+    @Severity(SeverityLevel.MINOR)
     public void testShortName(){
         Map<String,String> userdata = new HashMap<>();
         userdata.put("username","l");
@@ -113,6 +118,7 @@ public class UserRegisterTest extends BaseTestCase{
     @Description("Unsuccessfully user creation: username longer than 250 symbols")
     @DisplayName("Negative registration test: long username")
     @Test
+    @Severity(SeverityLevel.MINOR)
     public void testLongName(){
         Map<String,String> userdata = new HashMap<>();
         userdata.put("username",DataGenerator.getRandomString(251));

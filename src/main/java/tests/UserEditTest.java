@@ -1,13 +1,10 @@
 package tests;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
 import  lib.BaseTestCase;
-import lib.DataGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +16,7 @@ import java.util.Map;
 
 @Epic("Edit userData")
 @Feature("userData edition")
+@Link("https://software-testing.ru/lms/mod/assign/view.php?id=308007")
 public class UserEditTest extends  BaseTestCase{
 
     ApiCoreRequests apiCoreRequests =new ApiCoreRequests();
@@ -35,21 +33,12 @@ public class UserEditTest extends  BaseTestCase{
         else
         {
             //GENERATE_USER
-            Map<String,String> userData = DataGenerator.getRegistrationData();
-            Response responseCreateAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/",userData);
-
-            this.userId = getStringFromJson(responseCreateAuth,"id");
-
+            Map<String,String> authData = createUser();
             //LOGIN
-            Map<String,String> authData = new HashMap<>();
-            authData.put("email",userData.get("email"));
-            authData.put("password",userData.get("password"));
-
-            Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",authData);
-
-            this.header = this.getHeader(responseGetAuth, "x-csrf-token");
-            this.cookie = this.getCookie(responseGetAuth, "auth_sid");
-
+            Map<String,String> authUser = authUser(authData);
+            this.header = authUser.get("x-csrf-token");
+            this.cookie = authUser.get("auth_sid");
+            this.userId = authUser.get("user_id");
             //GET USERDATA
             Response responseGetData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/" + this.userId,
                     this.header,
@@ -61,6 +50,7 @@ public class UserEditTest extends  BaseTestCase{
     @Description("Creating user and edit his userdata successfully")
     @DisplayName("Edit user data for user test")
     @Test
+    @Severity(SeverityLevel.CRITICAL)
     public  void testEditJustCreatedUserTest(){
         //EDIT USERDATA
         String newName = "New Name";
@@ -82,6 +72,7 @@ public class UserEditTest extends  BaseTestCase{
     @Description("Try to edit user data without authorisation")
     @DisplayName("Edit user data test without auth")
     @Test
+    @Severity(SeverityLevel.NORMAL)
     public void testEditNotAuthorised(){
         String newNameNoAuth = "New Name no Auth";
         Map<String,String> editData = new HashMap<>();
@@ -98,6 +89,7 @@ public class UserEditTest extends  BaseTestCase{
     @Description("Try to edit another user data")
     @DisplayName("Edit another user data test")
     @Test
+    @Severity(SeverityLevel.CRITICAL)
     public void testEditAnotherUserData(){
         String existingUserID = "61671";
 
@@ -128,6 +120,7 @@ public class UserEditTest extends  BaseTestCase{
     @Description("Try to edit email to email without @")
     @DisplayName("Negative email edit test")
     @Test
+    @Severity(SeverityLevel.NORMAL)
     public void testNegativeEditEmail() {
 
         //EDIT USERDATA
@@ -151,6 +144,7 @@ public class UserEditTest extends  BaseTestCase{
     @Description("Try to edit firsName to one symbol")
     @DisplayName("Negative firsName edit test")
     @Test
+    @Severity(SeverityLevel.MINOR)
     public void testNegativeEditFirstName() {
 
         //EDIT USERDATA

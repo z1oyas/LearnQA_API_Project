@@ -1,4 +1,5 @@
 package tests;
+import io.qameta.allure.*;
 import io.restassured.specification.RequestSpecification;
 import lib.Assertions;
 
@@ -12,9 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import lib.ApiCoreRequests;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,8 +42,9 @@ public class AuthTest extends BaseTestCase {
     }
 
     @Test
-   @Description("Successfully authorize user")
+    @Description("Successfully authorize user")
     @DisplayName("Test positive auth user")
+    @Severity(SeverityLevel.BLOCKER)
     public void testAuthUser(){
         Response responseCheckAuth = apiCoreRequests
                 .makeGetRequest("https://playground.learnqa.ru/api/user/auth",
@@ -57,6 +56,7 @@ public class AuthTest extends BaseTestCase {
 
     @Description("Test check authorization status w/o sending cookie or token")
     @DisplayName("Test negative auth user")
+    @Severity(SeverityLevel.MINOR)
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
     public void testNegativeAuthUser(String condition){
