@@ -67,7 +67,7 @@ public class UserEditTest extends  BaseTestCase{
                         this.header,
                         this.cookie);
 
-        Assertions.assertJsonByName(responseUserData,"firstName",newName);
+        Assertions.<String>assertJsonByName(responseUserData,"firstName",newName);
     }
     @Description("Try to edit user data without authorisation")
     @DisplayName("Edit user data test without auth")
@@ -114,7 +114,7 @@ public class UserEditTest extends  BaseTestCase{
                 this.header,
                 this.cookie);
 
-        Assertions.assertJsonByName(responseSecondUserData,"username",SecondUserUsername);
+        Assertions.<String>assertJsonByName(responseSecondUserData,"username",SecondUserUsername);
     }
 
     @Description("Try to edit email to email without @")
@@ -138,7 +138,7 @@ public class UserEditTest extends  BaseTestCase{
                 this.header,
                 this.cookie);
 
-        Assertions.assertJsonByName(responseUserData, "email", this.UserData.get("email"));
+        Assertions.<String>assertJsonByName(responseUserData, "email", this.UserData.get("email"));
     }
 
     @Description("Try to edit firsName to one symbol")
@@ -155,13 +155,13 @@ public class UserEditTest extends  BaseTestCase{
                 this.cookie,
                 userdata);
 
-        Assertions.assertJsonByName(responseEditUser,"error","Too short value for field firstName");
+        Assertions.<String>assertJsonByName(responseEditUser,"error","Too short value for field firstName");
 
         //GET NEW USERDATA
         Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/" + this.userId,
                 this.header,
                 this.cookie);
 
-        Assertions.assertJsonByName(responseUserData, "firstName", this.UserData.get("firstName"));
+        Assertions.<String>assertJsonByName(responseUserData, "firstName", this.UserData.get("firstName"));
     }
 }

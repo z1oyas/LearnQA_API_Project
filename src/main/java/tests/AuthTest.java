@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class AuthTest extends BaseTestCase {
     String cookie;
     String header;
-    int userIdOnAuth;
+    Integer userIdOnAuth;
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
     @BeforeEach
     public void loginUser(){
@@ -51,7 +51,7 @@ public class AuthTest extends BaseTestCase {
                         this.header,
                         this.cookie);
 
-        Assertions.assertJsonByName(responseCheckAuth,"user_id",this.userIdOnAuth);
+        Assertions.<Integer>assertJsonByName(responseCheckAuth,"user_id",this.userIdOnAuth);
     }
 
     @Description("Test check authorization status w/o sending cookie or token")
@@ -66,11 +66,11 @@ public class AuthTest extends BaseTestCase {
         if (condition.equals("cookie")){
             Response responseForCheck =apiCoreRequests.makeGetRequestWithCookie("https://playground.learnqa.ru/api/user/auth",
                     this.cookie);
-            Assertions.assertJsonByName(responseForCheck,"user_id",0);
+            Assertions.<Integer>assertJsonByName(responseForCheck,"user_id",0);
         }else if (condition.equals("headers")){
             Response responseForCheck =apiCoreRequests.makeGetRequestWithToken("https://playground.learnqa.ru/api/user/auth",
                     this.header);
-            Assertions.assertJsonByName(responseForCheck,"user_id",0);
+            Assertions.<Integer>assertJsonByName(responseForCheck,"user_id",0);
         }else {
             throw new IllegalArgumentException("condition value not known"+condition);
         }
