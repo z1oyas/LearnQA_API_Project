@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Assertions {
     //devZ fix
+    //devZ fix2
     public static  <T> void assertJsonByName(Response Response,String name,T expectedValue){
         Response.then().assertThat().body("$",hasKey(name));
 
