@@ -129,4 +129,5 @@ public class UserRegisterTest extends BaseTestCase{
         Assertions.assertResponseTextEquals(responseLongName,"The value of 'username' field is too long");
         Assertions.assertStatusCodeEquals(responseLongName,400);
     }
+    //after new branch
 }
